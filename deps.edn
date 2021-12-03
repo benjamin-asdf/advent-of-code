@@ -1,0 +1,5 @@
+{:paths ["src"]
+ :deps {org.clojure/clojure #:mvn {:version "1.11.0-alpha3"}}}
+
+;; somebody more experiencend
+;; https://gist.github.com/corasaurus-hex/389968ca616083ba0feb630330ba1739
