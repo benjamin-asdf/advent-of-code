@@ -39,13 +39,13 @@
 ;; after learning about partition
 
 ;; 1)
-(def get-increases
-  (fn [nums]
-    (->>
-     nums
-     (partition 2 1)
-     (filter (fn [[a b]] (> b a)))
-     count)))
+(defn get-increases
+  [nums]
+  (->>
+   nums
+   (partition 2 1)
+   (filter (fn [[a b]] (> b a)))
+   count))
 
 ;; 2)
 (->>
