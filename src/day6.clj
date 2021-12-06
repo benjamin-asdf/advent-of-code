@@ -37,24 +37,7 @@
       (fish input))))))
 
 ;; 366057
-;; 364656
 (fish (slurp "inputs/day6"))
-
-
-(last (str/split (slurp "inputs/day6") #","))
-
-(defn next-fish-2 [curr]
-  (merge
-   (into
-    {}
-    (map
-     (fn [[k v]]
-       [(case
-            k
-            0 6
-            (dec k)) v]))
-    curr)
-   {8 (curr 0)}))
 
 ;; part 2
 
