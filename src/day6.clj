@@ -90,3 +90,7 @@
     (reduce +))))
 
 ;; 1653559299811
+
+
+;; milkells
+;; (update 6 (fnil + 0) v)
