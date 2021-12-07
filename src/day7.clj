@@ -42,16 +42,14 @@
    crabs))
 
 
-(time (let [crabs (->crabs
-              (slurp "inputs/day7")
-              )]
-   (apply
-    min
-    (map
-     #(fuel-2 % crabs)
-     (range
-      (apply min crabs)
-      (inc (apply max crabs)))))))
+(let [crabs (->crabs (slurp "inputs/day7"))]
+  (apply
+   min
+   (map
+    #(fuel-2 % crabs)
+    (range
+     (apply min crabs)
+     (inc (apply max crabs))))))
 
 ;; 89647695
 
