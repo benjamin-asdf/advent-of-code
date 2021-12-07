@@ -37,8 +37,6 @@
       (fish input))))))
 
 ;; 366057
-(fish (slurp "inputs/day6"))
-
 ;; part 2
 
 (time
@@ -74,6 +72,5 @@
 
 ;; 1653559299811
 
-
-;; milkells
-;; (update 6 (fnil + 0) v)
+;; sick solution
+;; https://github.com/mknoszlig/aoc2021/blob/main/src/aoc2021/day6.clj
