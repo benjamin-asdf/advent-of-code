@@ -40,6 +40,7 @@ C Z")
      :else 0)))
 
 (play [:rock :paper])
+
 (->>
  s
  parse-input
@@ -54,6 +55,7 @@ C Z")
  (reduce +))
 13565
 
+12424
 ;; part 2
 
 (let [loses? (set/map-invert wins?)]
