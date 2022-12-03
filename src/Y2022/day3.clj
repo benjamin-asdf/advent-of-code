@@ -16,7 +16,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw")
   (cond
     (<= (int \a) (int c))
     (inc (- (int c) (int \a)))
-    :else (+ (inc (- (int c) (int \A))) 26)))
+    :else (+ (- (int c) (int \A)) 27)))
 
 (priority \a)
 (priority \b)
