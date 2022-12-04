@@ -1,8 +1,7 @@
 (ns Y2022.day4
   (:require
    [clojure.string :as str]
-   [clojure.set :as set]
-   ))
+   [clojure.set :as set]))
 
 (def
   input
