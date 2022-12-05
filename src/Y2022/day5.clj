@@ -38,7 +38,7 @@ move 1 from 1 to 2")
              (count longest)
              (concat lst (repeat nil)))))
          (apply map vector)
-         (into [] (map #(into [] (remove nil? %)))))
+        (into [] (map #(into [] (remove nil? %)))))
         moves
         (->>
          (re-seq #"move (\d+) from (\d+) to (\d+)" moves-str)
@@ -62,31 +62,17 @@ move 1 from 1 to 2")
   (-> crates
       (update from pop)
       (update to conj (peek (crates from)))))
-;; part 1
-
 
 (defn part-1 [input]
   (let [{:keys [crates moves]} (parse input)]
     (->> (reduce step-crate crates moves)
          (map peek)
          str/join)))
-(part-1 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day5"))
 
+(part-1 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day5"))
 "PSNRGBTFT"
 
-(comment
-  (let [[longest :as lsts]
-        '(("Z" "M" "P")
-          ("N" "C")
-          (nil "D"))]
-    (map
-     (fn [lst]
-       (take
-        (count longest)
-        (concat lst (repeat nil))))
-     lsts)))
 (def crates [["Z" "N"] ["M" "C" "D"] ["P"]])
-
 (def moves
   '([1 0] [0 2] [0 2] [0 2] [1 0] [1 0] [0 1]))
 
@@ -96,28 +82,10 @@ move 1 from 1 to 2")
              (update 0 conj (peek (crates 1))))
          [["Z" "N" "D"] ["M" "C"] ["P"]])
 
-(def input (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day5"))
-
-["[B]                     [N]     [H]"
- "[V]         [P] [T]     [V]     [P]"
- "[W]     [C] [T] [S]     [H]     [N]"
- "[T]     [J] [Z] [M] [N] [F]     [L]"
- "[Q]     [W] [N] [J] [T] [Q] [R] [B]"
- "[N] [B] [Q] [R] [V] [F] [D] [F] [M]"
- "[H] [W] [S] [J] [P] [W] [L] [P] [S]"
- "[D] [D] [T] [F] [G] [B] [B] [H] [Z]"
- " 1   2   3   4   5   6   7   8   9"]
-
-(:crates (parse (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day5")))
-
-
-(:moves (parse (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day5")))
-
 (defn step-crate-part-2 [crates {:keys [from to amount]}]
   (-> crates
       (update from #(drop-last amount %))
       (update to concat (take-last amount (crates from)))))
-
 
 (defn part-2 [input]
   (let [{:keys [crates moves-part-2]} (parse input)]
