@@ -32,7 +32,6 @@
 (part-1 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day4"))
 444
 
-
 (defn part-2 [input]
   (->>
    input
