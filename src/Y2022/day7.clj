@@ -78,7 +78,7 @@ $ ls
 (def at-most 100000)
 
 (defn dir-size [tree]
-  ;; I guess I did my tree worng , I want to say something like (tree-seq :dir :files)
+  ;; I guess I did my tree wrong I want to say something like (tree-seq :dir :files)
   (transduce (keep :size) + 0 (tree-seq seqable? seq tree)))
 
 (dir-size (get-in tree ["/" "a"]))
@@ -93,10 +93,6 @@ $ ls
      (reduce +))
 
 2104783
-
-(def total 70000000)
-(def min-unused 30000000)
-
 
 (defn part-2 [input]
   (let [dirs
