@@ -60,7 +60,6 @@ $ ls
     {:dirs {} :curr-path []}
     (str/split-lines input))))
 
-
 (def tree
   '{"/" {:files ({:name "c.dat", :size 8504156} {:name "b.txt", :size 14848514}),
          "a" {:files ({:name "h.lst", :size 62596}
