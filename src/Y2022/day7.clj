@@ -37,8 +37,6 @@ $ ls
   (:dirs
    (reduce
     (fn [{:keys [curr-path dirs] :as state} line]
-      (def state state)
-      (def line line)
       (let [[_  cd-dir] (re-find #"\$ cd ([\w/]+)$"  line)
             [_ size file-name] (re-find #"^(\d+) (.+?)$" line)]
         (cond cd-dir
