@@ -4,13 +4,14 @@
    [clojure.core.matrix.operators :as mo]
    [clojure.string :as str]
    [clojure.set :as set]))
+
 (def input
   "30373
 25512
 65332
 33549
-35390"
-  )
+35390")
+
 
 (defn parse [input]
   (->>
@@ -54,6 +55,7 @@
 
 (part-1 (parse (slurp "inputs/2022/day8")))
 1854
+
 (defn coord-move [coord direction]
   (mo/+
    coord
