@@ -52,7 +52,6 @@
    (into #{})
    count))
 
-
 (solve 2 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day9"))
 6243
 
