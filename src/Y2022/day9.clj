@@ -1,7 +1,5 @@
 (ns Y2022.day9
   (:require
-   [clojure.string :as str]
-   [clojure.core.matrix.operators :as mo]
    [clojure.core.matrix :as m]))
 
 (def input "R 4\nU 4\nL 3\nD 1\nR 4\nD 1\nL 5\nR 2")
