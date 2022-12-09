@@ -45,9 +45,7 @@
 ;; the last tail positions become the head positions of the next tail
 (defn solve [n input]
   (->>
-   input
-   parse-moves
-   get-head-positions
+   (get-head-positions (parse-moves input))
    (iterate head-positions->tail-positions)
    (take n)
    last
