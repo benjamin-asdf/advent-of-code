@@ -4,18 +4,7 @@
    [clojure.core.matrix.operators :as mo]
    [clojure.core.matrix :as m]))
 
-
-(m/add [0 0] [0 1])
-
-(def input
-  "R 4
-U 4
-L 3
-D 1
-R 4
-D 1
-L 5
-R 2")
+(def input "R 4\nU 4\nL 3\nD 1\nR 4\nD 1\nL 5\nR 2")
 
 (defn parse-moves [input]
   (->> input
@@ -66,20 +55,24 @@ R 2")
 (part-1 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day9"))
 6243
 
-(def input-2
-"R 5
-U 8
-L 8
-D 3
-R 17
-D 10
-L 25
-U 20")
+(def input-2 "R 5\nU 8\nL 8\nD 3\nR 17\nD 10\nL 25\nU 20")
 
 ;; the last tail positions become the head positions of the next tail
+(defn part-2 [input]
+  (count
+   (into
+    #{}
+    (last
+     (take
+      10
+      (iterate
+       head-positions->tail-positions
+       (get-head-positions
+        (parse-moves
+         input))))))))
 
-(count (into #{} (last (take 10 (iterate head-positions->tail-positions (get-head-positions (parse-moves input-2)))))))
+(part-2 input-2)
 36
 
-(count (into #{} (last (take 10 (iterate head-positions->tail-positions (get-head-positions (parse-moves (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day9") )))))))
+(part-2 (slurp "inputs/2022/day9"))
 2630
