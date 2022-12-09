@@ -40,37 +40,23 @@
         curr-tail-pos)))
 
 (defn head-positions->tail-positions [head-positions]
-  (reductions
-   tail-position
-   [0 0]
-   head-positions))
-
-(defn part-1 [input]
-  (count
-   (into #{}
-         (head-positions->tail-positions (get-head-positions (parse-moves input))))))
-
-(part-1 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day9"))
-6243
-
-(def input-2 "R 5\nU 8\nL 8\nD 3\nR 17\nD 10\nL 25\nU 20")
+  (reductions tail-position [0 0] head-positions))
 
 ;; the last tail positions become the head positions of the next tail
-(defn part-2 [input]
-  (count
-   (into
-    #{}
-    (last
-     (take
-      10
-      (iterate
-       head-positions->tail-positions
-       (get-head-positions
-        (parse-moves
-         input))))))))
+(defn solve [n input]
+  (->>
+   input
+   parse-moves
+   get-head-positions
+   (iterate head-positions->tail-positions)
+   (take n)
+   last
+   (into #{})
+   count))
 
-(part-2 input-2)
-36
 
-(part-2 (slurp "inputs/2022/day9"))
+(solve 2 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day9"))
+6243
+
+(solve 10 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day9"))
 2630
