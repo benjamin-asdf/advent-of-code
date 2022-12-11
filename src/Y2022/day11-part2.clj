@@ -114,24 +114,6 @@ Monkey 3:
 (* 23 19 13 17)
 96577
 
-(time (part-2 input 100))
-(part-2 input 20)
-(part-2 input 1)
-(time (part-2 input (* 4 100)))
-(time (part-2 input (* 6 100)))
-;; 400 is 60
-(/ (* 60 (/ 10000 400)) 1000)
-;; it is not linear else it would be done in 3seconds
-(time (part-2 input (* 10 100)))
-
-(part-2 input (* 1000))
-;; I guess there is a trick with 'devisible by'
-;; so there is some really fast calculation
-;; combining the operation and the test maybe
-;; something like shift bit something
-
-(time (part-2 input (* 7 100)))
-(time (part-2 input 10000))
 (time (part-2 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day11") 10000))
 21115867968
 "Elapsed time: 1091.237098 msecs"
