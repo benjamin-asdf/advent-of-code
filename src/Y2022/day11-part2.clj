@@ -81,11 +81,6 @@
        (take 2)
        (apply *))))
 
-(apply * (map bigint (map parse-long (map second (re-seq #"divisible by (\d+)" input)))))
-96577N
-(* 23 19 13 17)
-96577
-
 (time (part-2 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day11") 10000))
 21115867968
 "Elapsed time: 1091.237098 msecs"
