@@ -18,8 +18,7 @@
     (loop [i 0]
       (cond
         (and (= (count left) (count right))
-             (every? #{:same} (map compare-inputs left right)))
-        :same
+             (every? #{:same} (map compare-inputs left right))) :same
         (= i (count left)) :left-first
         (= i (count right)) :right-first
         :else
@@ -53,7 +52,6 @@
 (defn part-2 [input]
   (let [d-packets #{[[2]]
                     [[6]]}]
-
     (->>
      (into (read-string (str "[" input "]"))
            d-packets)
@@ -67,7 +65,6 @@
      (map first)
      (map inc)
      (reduce *))))
-
 
 (time (part-2 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day13")))
 "Elapsed time: 8.917616 msecs"
