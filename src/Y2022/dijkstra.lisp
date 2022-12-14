@@ -57,7 +57,7 @@
                (when (< alt (gethash (car neighbor) distances))
                  (setf (gethash (car neighbor) distances) alt)
                  (setf (gethash (car neighbor) previous) current-node)
-                 (push-heap (car neighbor))))))
+                 (push-heap (car neighbor) priority-queue)))))
       finally (return (list :distances distances
                             :previous previous)))))
 
