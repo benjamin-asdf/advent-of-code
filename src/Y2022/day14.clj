@@ -23,26 +23,6 @@
    (mapcat rocks)
    (into #{})))
 
-(comment
-  (map str/join
-       (let [rocks (parse-rocks (slurp  "/home/benj/repos/clojure/aoc/inputs/2022/day14"))]
-         (for [y
-               (range
-
-                ;; (apply min (map second rocks))
-                (inc
-                 (apply max (map second rocks))))]
-           (for [x (range (apply min (map first rocks))
-                          (inc (apply max (map first rocks))))]
-             (cond
-               (rocks [x y])
-               "#"
-               (= [x y] [500 0]) "+"
-               :else
-               "."))))))
-
-(parse-rocks (slurp  "/home/benj/repos/clojure/aoc/inputs/2022/day14"))
-
 (defn possible-next-sand [[x y]]
   [[x (inc y)]
    [(dec x) (inc y)]
@@ -93,9 +73,7 @@
    count))
 
 ;; slow 5+ seconds but I got my stars
-
 (part-1 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day14"))
-683
 
 (defn part-2 [input]
   (->>
@@ -119,6 +97,4 @@
    :resting-sand
    count))
 
-*1
-28821
 (part-2 (slurp "/home/benj/repos/clojure/aoc/inputs/2022/day14"))
