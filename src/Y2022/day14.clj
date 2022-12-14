@@ -37,17 +37,12 @@
   (let [[next-x next-y :as next-sand]
         (when
             current-sand
-            (first
-             (remove
-              (occupied-fn? state)
-              (possible-next-sand
-               current-sand))))]
+            (first (remove (occupied-fn? state) (possible-next-sand current-sand))))]
     (cond
       (filled? state next-sand)
       {:filled state}
       next-sand
       (assoc state :current-sand next-sand)
-      ;; next sand
       :else
       (-> state
           (update :resting-sand conj current-sand)
@@ -66,9 +61,8 @@
                   (< (apply max (map second rocks)) next-y)))
      :resting-sand #{}
      :current-sand [500 0]})
-   (filter :filled)
+   (keep :filled)
    first
-   :filled
    :resting-sand
    count))
 
@@ -91,9 +85,8 @@
                (rocks sand)
                (<= bottom-y y))))
        :current-sand [500 0]}))
-   (filter :filled)
+   (keep :filled)
    first
-   :filled
    :resting-sand
    count))
 
