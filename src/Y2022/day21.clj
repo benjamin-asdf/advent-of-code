@@ -1,4 +1,6 @@
-(ns Y2022.day21 (:require [clojure.string :as str]))
+(ns Y2022.day21
+  (:require [clojure.string :as str]
+            [clojure.core.async :as a]))
 
 (defn monkey-yell [jobs name]
   (let [job (jobs name)]
@@ -28,7 +30,26 @@ pppw: cczh / lfqf
 lgvd: ljgn * ptdq
 drzm: hmdt ")
 
-(->
+(defn ->monkey-jobs [monkeys [monkey job]]
+  (assoc
+   monkeys
+   monkey
+   (a/go
+     (if (number? job)
+       job
+       (let [[op a b] job]
+
+         ;; I have a thinko
+         ;; monkeys at this point are not channels
+         ;; I need another way to ref other monkeys
+
+         (op (a/<! (monkeys a))
+             (a/<! (monkeys b)))))
+
+     ))
+  )
+
+(->>
  (into {}
        (comp
         (map (fn [[_ name number monkey1 op monkey2]]
@@ -42,4 +63,5 @@ drzm: hmdt ")
         #"(\w+): (?:(\d+)|(?:(\w+) (.) (\w+)))"
         input))
  ;; (monkey-yell :root)
+ (reduce ->monkey-jobs {})
  )
