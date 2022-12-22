@@ -93,5 +93,6 @@ hmdt: 32
       (logic/== q (:humn monkey->lvar))
       (bind-all monkey->lvar monkeys))))
 
-(part-2 (slurp "2022day21"))
+(time (part-2 (slurp "2022day21")))
 (3220993874133)
+"Elapsed time: 7.081473 msecs"
