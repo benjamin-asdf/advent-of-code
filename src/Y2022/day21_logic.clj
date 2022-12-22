@@ -9,24 +9,7 @@
      [clojure.core.logic.fd :as fd]
      [clojure.core.logic :as logic]))
 
-(def
-  input
-  "root: pppw + sjmn
-dbpl: 5
-cczh: sllz + lgvd
-zczc: 2
-ptdq: humn - dvpt
-dvpt: 3
-lfqf: 4
-humn: 5
-ljgn: 2
-sjmn: drzm * dbpl
-sllz: 4
-pppw: cczh / lfqf
-lgvd: ljgn * ptdq
-drzm: hmdt - zczc
-hmdt: 32
-")
+(def input "root: pppw + sjmn\ndbpl: 5\ncczh: sllz + lgvd\nzczc: 2\nptdq: humn - dvpt\ndvpt: 3\nlfqf: 4\nhumn: 5\nljgn: 2\nsjmn: drzm * dbpl\nsllz: 4\npppw: cczh / lfqf\nlgvd: ljgn * ptdq\ndrzm: hmdt - zczc\nhmdt: 32\n")
 
 (defn parse-monkeys [input]
   (into
@@ -34,12 +17,7 @@ hmdt: 32
    (comp
     (map
      (fn
-       [[_
-         name
-         number
-         monkey1
-         op
-         monkey2]]
+       [[_ name number monkey1 op monkey2]]
        [(keyword name)
         (if
             number
