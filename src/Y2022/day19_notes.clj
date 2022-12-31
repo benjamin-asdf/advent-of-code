@@ -137,14 +137,18 @@
          [b a]
          :else
          nil)]
-    ;; time doesn't get consumed
       (cond
         (:time move)
         [(step-time factory) move]
         (and (:building factory) (:build move))
         [factory move]
         (:build move)
-        [(factory-build-if-possible factory (:build move)) move])
+        [(factory-build-if-possible factory (:build move)) move]
+        ;; healing molecule,
+        ;; try to delete factories that are not doing well
+        ;; and duplicate factories that are doing well
+
+        )
       [a b]))
 
 (defn mix-and-react [reaction mols]
@@ -178,6 +182,7 @@
                 {:build :geode}
                 {:build :obsidian}
                 {:build :obsidian}
+                {:build :obsidian}
                 {:build :obsidian}]))
         (repeat 10 {:time 1})
         (take 10 (cycle blueprint-mols))))
@@ -190,6 +195,8 @@
    (filter (comp zero? :time))
    (sort-by collected-geodes >)
    (take 10)))
+
+
 (def top-geodes *1)
 
 (first top-geodes)
@@ -220,7 +227,7 @@
 
 
 
-(let [blueprint-mols (blueprint-molecules blueprints)
+(let [blueprint-mols [(second blueprints)] ;; (blueprint-molecules blueprints)
       mols
       (into
        []
@@ -234,8 +241,9 @@
                 {:build :geode}
                 {:build :obsidian}
                 {:build :obsidian}
+                {:build :obsidian}
                 {:build :obsidian}]))
-        (repeat 10 {:time 1})
+        (repeat 30 {:time 1})
         (take 10 (cycle blueprint-mols))))
       mols (if (even? (count mols)) mols (into mols [{:time 1}]))
       reactions
@@ -257,6 +265,74 @@
      (* (inc i) (collected-geodes (first (filter (comp #{i} :blueprint-n) sorted-reactions))))))
 
   [(collected-geodes (first top-runs))
-   (collected-geodes (second top-runs))]
+   (collected-geodes (second top-runs))])
+*1
 
+
+
+
+
+(let [blueprint-mols [(second blueprints)] ;; (blueprint-molecules blueprints)
+      mols
+      (into
+       []
+       (concat
+        [{:build :ore}
+         {:build :ore}
+         {:build :clay}
+         {:build :clay}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :geode}
+         {:build :obsidian}
+         {:build :obsidian}
+         {:build :obsidian}
+         {:build :obsidian}
+         {:build :obsidian}
+         {:build :obsidian}
+         {:build :obsidian}]
+        (repeat 1 {:time 1})
+        (blueprint-molecules [(second blueprints)])))
+      mols (if (even? (count mols)) mols (into mols [{:time 1}]))
+      reactions
+      (mapcat identity (pmap (fn [mols] (reaction-cycle robot-factory-reaction mols 1100)) (repeat 100 mols)))
+      sorted-reactions
+      (->>
+       reactions
+       (filter factory?)
+       (filter (comp zero? :time))
+       (sort-by collected-geodes >))]
+
+
+   (collected-geodes (first sorted-reactions))
+
+  ;; (def top-runs
+  ;;   (for [i (range (count blueprints))]
+  ;;     (first (filter (comp #{i} :blueprint-n) sorted-reactions))))
+
+  ;; (reduce
+  ;;  +
+  ;;  (for [i (range (count blueprints))]
+  ;;    (* (inc i) (collected-geodes (first (filter (comp #{i} :blueprint-n) sorted-reactions))))))
+
+  ;; [(collected-geodes (first top-runs))
+  ;;  (collected-geodes (second top-runs))]
   )

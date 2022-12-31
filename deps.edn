@@ -1,6 +1,7 @@
 {:paths ["src"]
  :deps
- {net.mikera/core.matrix {:mvn/version "0.62.0"}}}
+ {org.clojure/core.logic {:mvn/version "1.0.1"}
+  net.mikera/core.matrix {:mvn/version "0.62.0"}}}
 
 ;; somebody more experiencend
 ;; https://gist.github.com/corasaurus-hex/389968ca616083ba0feb630330ba1739
