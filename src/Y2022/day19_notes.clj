@@ -23,7 +23,7 @@
        :clay {:ore clay-ore}
        :obsidian {:ore obsidian-ore :clay obsidian-clay}
        :geode {:ore geode-ore :obsidian geode-obsidian}}))
-   (into [])))
+   (into[])))
 
 (parse-blueprints (slurp "inputs/2022/day19"))
 
@@ -226,6 +226,8 @@
 ;; nvm, I can only build 1 at a time
 
 
+;; it doesn't work yet, they don't find the best runs
+;; I am thinking of adding a "recovery" molecule that resets runs that are not doing well
 
 (let [blueprint-mols [(second blueprints)] ;; (blueprint-molecules blueprints)
       mols
@@ -267,72 +269,3 @@
   [(collected-geodes (first top-runs))
    (collected-geodes (second top-runs))])
 *1
-
-
-
-
-
-(let [blueprint-mols [(second blueprints)] ;; (blueprint-molecules blueprints)
-      mols
-      (into
-       []
-       (concat
-        [{:build :ore}
-         {:build :ore}
-         {:build :clay}
-         {:build :clay}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :geode}
-         {:build :obsidian}
-         {:build :obsidian}
-         {:build :obsidian}
-         {:build :obsidian}
-         {:build :obsidian}
-         {:build :obsidian}
-         {:build :obsidian}]
-        (repeat 1 {:time 1})
-        (blueprint-molecules [(second blueprints)])))
-      mols (if (even? (count mols)) mols (into mols [{:time 1}]))
-      reactions
-      (mapcat identity (pmap (fn [mols] (reaction-cycle robot-factory-reaction mols 1100)) (repeat 100 mols)))
-      sorted-reactions
-      (->>
-       reactions
-       (filter factory?)
-       (filter (comp zero? :time))
-       (sort-by collected-geodes >))]
-
-
-   (collected-geodes (first sorted-reactions))
-
-  ;; (def top-runs
-  ;;   (for [i (range (count blueprints))]
-  ;;     (first (filter (comp #{i} :blueprint-n) sorted-reactions))))
-
-  ;; (reduce
-  ;;  +
-  ;;  (for [i (range (count blueprints))]
-  ;;    (* (inc i) (collected-geodes (first (filter (comp #{i} :blueprint-n) sorted-reactions))))))
-
-  ;; [(collected-geodes (first top-runs))
-  ;;  (collected-geodes (second top-runs))]
-  )
