@@ -2,7 +2,12 @@
   (:require [clojure.core.matrix :as m]
             [clojure.string :as str]))
 
+
 (def sample-lava [[2 2 2] [1 2 2] [3 2 2] [2 1 2] [2 3 2] [2 2 1] [2 2 3] [2 2 4] [2 2 6] [1 2 5] [3 2 5] [2 1 5] [2 3 5]])
+
+(def lava? #{1})
+(def air? (complement lava?))
+(def air-cube? (fn [matrix p] (air? (apply m/mget matrix p))))
 
 (defn expand-lava [lava]
   (let [lava? (into #{} lava)
@@ -13,10 +18,6 @@
                (into [] (for [y (range (inc y-size))]
                           (into [] (for [z (range (inc z-size))]
                                      (if (lava? [x y z]) 1 0)))))))))
-
-(def lava? #{1})
-(def air? (complement lava?))
-(def air-cube? (fn [matrix p] (air? (apply m/mget matrix p))))
 
 (defprotocol UnionFind
   (parent [this x]
