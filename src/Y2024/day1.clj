@@ -21,9 +21,7 @@
   (let [list-a (map first (partition 2 input))
         list-b (map second (partition 2 input))
         freqs (frequencies list-b)]
-    (transduce (comp (map (juxt identity #(freqs % 0)))
-                     (map (fn [[nr freq-in-list-b]]
-                            (* nr freq-in-list-b))))
+    (transduce (comp (map (fn [nr] (* nr (freqs nr 0)))))
                +
                list-a)))
 
