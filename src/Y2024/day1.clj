@@ -12,6 +12,7 @@
         (sort list-a)
         (sort list-b)))))
 
+
 (list-distances
  (read-string (str "[" (slurp "inputs/2024/1/input1") "]")))
 1388114
@@ -53,3 +54,13 @@
      +
      list-a))
   31)
+
+;; ---------------------
+;; I just learned about take-nth
+(comment
+  (let [input [3 4 4 3 2 5 1 3 3 9 3 3]]
+    [(take-nth 2 input)
+     (take-nth 2 (rest input))])
+  [(3 4 2 1 3 3)
+   (4 3 5 3 9 3)]
+)
