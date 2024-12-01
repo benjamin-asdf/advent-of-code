@@ -32,7 +32,6 @@
 23529853
 
 
-
 (comment
   ;; example:
 
@@ -43,6 +42,7 @@
             (map (comp abs #(- %1 %2))
                  (sort list-a)
                  (sort list-b))))
+  11
 
   (let [input [3 4 4 3 2 5 1 3 3 9 3 3]
         list-a (map first (partition 2 input))
@@ -54,4 +54,4 @@
                   (* nr freq-in-list-b))))
      +
      list-a))
-  11)
+  31)
