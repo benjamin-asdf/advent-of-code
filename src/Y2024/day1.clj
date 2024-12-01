@@ -22,10 +22,7 @@
   (let [list-a (map first (partition 2 input))
         list-b (map second (partition 2 input))
         freqs (frequencies list-b)]
-    (transduce (comp (map (fn [nr] (* nr (freqs nr 0)))))
-               +
-               list-a)))
-
+    (transduce (map (fn [nr] (* nr (freqs nr 0)))) + list-a)))
 
 (sum-frequencies (read-string (str "[" (slurp "inputs/2024/1/input1") "]")))
 23529853
