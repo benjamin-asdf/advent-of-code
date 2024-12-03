@@ -84,51 +84,47 @@
 ;; instructions: do, don't, mul
 
 
-   ;;
-   ;; 2. evaluate instructions:
-   ;; - do: enable mul
-   ;; - don't: disable mul
-   ;; - mul: if enabled, then mul, else nothing
-   ;;            (or 0)
+;;
+;; 2. evaluate instructions:
+;; - do: enable mul
+;; - don't: disable mul
+;; - mul: if enabled, then mul, else nothing
+;;            (or 0)
 (defn part-2-evaluate
   [parsed-input]
   (:acc
-    (reduce
-      ;; for each instruction...
-      ;; accumulate the result
-      ;;
-      (fn [state
-           [ ;; 0. the match
-            _
-            ;; 1. the mul match
-            mul?
-            ;; the numbers, if present
-            mul-a mul-b
-            ;;
-            do?
-            ;;
-            dont?]]
-        ;; -----------------------------
-        ;;  evaluator
-        ;; -----------------------------
-        (cond-> state
-          (and (:enabled? state) mul?)
-          (update
-           :acc
-           +
-           (* (parse-long mul-a)
-              (parse-long mul-b)))
-          do? (assoc :enabled? true)
-          dont? (assoc :enabled? false)))
-      {;; starts true
-       :enabled? true
-       ;; the mul outcome
-       :acc 0}
-      parsed-input)))
-
-
-
-
+   (reduce
+    ;; for each instruction...
+    ;; accumulate the result
+    ;;
+    (fn [state
+         [ ;; 0. the match
+          _
+          ;; 1. the mul match
+          mul?
+          ;; the numbers, if present
+          mul-a mul-b
+          ;;
+          do?
+          ;;
+          dont?]]
+      ;; -----------------------------
+      ;;  evaluator
+      ;; -----------------------------
+      (cond-> state
+        (and (:enabled? state) mul?)
+        (update
+         :acc
+         +
+         (* (parse-long mul-a)
+            (parse-long mul-b)))
+        do? (assoc :enabled? true)
+        dont? (assoc :enabled? false)))
+    { ;; starts true
+     :enabled? true
+     ;; the mul outcome
+     :acc 0}
+    parsed-input)))
 
 
 
@@ -166,7 +162,4 @@
   ;; so:
 
   ;; matches 3 (max)
-  (re-seq #"\d{1,3}," "1234,")
-
-
-  )
+  (re-seq #"\d{1,3}," "1234,"))
