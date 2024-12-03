@@ -2,10 +2,8 @@
 
 ;; ----------------------------------------------------
 ;; There is a ASMR live code of this uploaded
-;;
+;; https://youtu.be/O2qgApg-Fxo?si=GuznvqZjKDr--szx
 ;; ----------------------------------------------------
-
-
 
 ;; input: corrupted memory
 
