@@ -208,9 +208,8 @@
 (defn MAS-mask
   [grid]
   (torch/tensor
-   (walk/postwalk
-    (fn [x]
-      (if (char? x) (get mas-map x 0) x))
+   (mapv
+    (partial mapv #(mas-map % 0))
     grid)
    :dtype
    torch/float))
@@ -248,17 +247,19 @@
       (torch/set_default_device "cpu")
       (time (part-2
              (slurp "/home/benj/repos/advent-of-code/inputs/2024/4/input"))))
+
   ;; CPU:
 
-  ;; "Elapsed time: 10.92577 msecs"
-  ;; "Elapsed time: 10.382998 msecs"
-  ;; "Elapsed time: 8.90543 msecs"
-  ;; "Elapsed time: 8.838042 msecs"
-  ;; "Elapsed time: 8.922721 msecs"
-  ;; "Elapsed time: 10.300352 msecs"
-  ;; "Elapsed time: 8.98003 msecs"
-  ;; "Elapsed time: 9.087902 msecs"
-
+  ;; "Elapsed time: 9.921373 msecs"
+  ;; "Elapsed time: 10.219452 msecs"
+  ;; "Elapsed time: 8.859742 msecs"
+  ;; "Elapsed time: 8.369945 msecs"
+  ;; "Elapsed time: 8.44238 msecs"
+  ;; "Elapsed time: 8.561093 msecs"
+  ;; "Elapsed time: 10.026981 msecs"
+  ;; "Elapsed time: 9.326467 msecs"
+  ;; "Elapsed time: 8.731832 msecs"
+  ;; "Elapsed time: 8.859693 msecs"
 
   (do (require-python '[torch.cuda :as torch.cuda])
       (torch/set_default_device "cuda")
