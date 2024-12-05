@@ -56,7 +56,6 @@
 (defn ->weights [rule]
   (torch/tensor rule :dtype torch/float))
 
-;; wonderful.
 (def rules
   [
    [[0 0 0]
@@ -114,12 +113,23 @@
 ;; output = count elements in remaining board
 ;;
 
+;; learning from part 2
+;; I would want to write something like:
+;;
+#_[[\X \M \A \S]]
+#_
+[[\X 0 0 0]
+ [0 \M 0 0]
+ [0 0 \A 0]
+ [0 0 0 \s]]
+
+
 (defn mask-for-letter
   [grid letter]
   (torch/tensor (vec (map (fn [row]
                             (vec (map #(get {letter 1} % 0)
-                                   row)))
-                       grid))
+                                      row)))
+                          grid))
                 :dtype
                 torch/float))
 
