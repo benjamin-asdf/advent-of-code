@@ -1,10 +1,9 @@
 (ns Y2024.day4
-  (:require
-   [clojure.string :as str]
-   [clojure.walk :as walk]
-   [libpython-clj2.require :refer [require-python]]
-   [libpython-clj2.python :refer [py. py..] :as
-    py]))
+  (:require [clojure.string :as str]
+            [clojure.walk :as walk]
+            [libpython-clj2.require :refer [require-python]]
+            [libpython-clj2.python :refer [py. py..] :as
+             py]))
 
 
 ;; ---------------------
@@ -119,8 +118,8 @@
   [grid letter]
   (torch/tensor (vec (map (fn [row]
                             (vec (map #(get {letter 1} % 0)
-                                      row)))
-                          grid))
+                                   row)))
+                       grid))
                 :dtype
                 torch/float))
 
@@ -198,32 +197,31 @@
 ;; makes a board
 (defn MAS-mask
   [grid]
-  (torch/tensor
-   (vec (map (fn [row] (vec (map #(get mas-map % 0) row)))
-             grid))
-   :dtype
-   torch/float))
+  (torch/tensor (walk/postwalk
+                  (fn [x]
+                    (if (char? x) (get mas-map x 0) x))
+                  grid)
+                :dtype
+                torch/float))
+
+(defn count-nonzero
+  [t]
+  (torch/numel (torch/nonzero (py.. t (view -1)))))
 
 (defn xmasses
   [rule grid]
   (torch/eq (play-ca (->weights rule) (MAS-mask grid))
             xmas-target))
 
-(defn count-nonzero
-  [t]
-  (torch/numel (torch/nonzero (py.. t (view -1)))))
-
 (defn part-2
   [input]
-  (count-nonzero (let [grid (->grid input)]
-                   (torch/sum (torch/stack
-                                (into []
-                                      (map (fn [rule]
-                                             (xmasses rule
-                                                      grid))
-                                        MAS-rules)))
-                              :dim 0
-                              :keepdim true))))
+  (count-nonzero
+    (let [grid (->grid input)]
+      (torch/sum (torch/stack
+                   (vec (map (fn [rule] (xmasses rule grid))
+                          MAS-rules)))
+                 :dim 0
+                 :keepdim true))))
 
 (part-2 ".M.S......\n..A..MSMS.\n.M.S.MAA..\n..A.ASMSM.\n.M.S.M....\n..........\nS.S.S.S.S.\n.A.A.A.A..\nM.M.M.M.M.\n..........\n")
 9
