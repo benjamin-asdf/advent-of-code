@@ -1,7 +1,5 @@
-{:paths ["src"]
- :deps
- {org.clojure/core.logic {:mvn/version "1.0.1"}
-  net.mikera/core.matrix {:mvn/version "0.62.0"}}}
-
-;; somebody more experiencend
-;; https://gist.github.com/corasaurus-hex/389968ca616083ba0feb630330ba1739
+{:deps {clj-python/libpython-clj {:mvn/version "2.025"}
+        cnuernber/dtype-next {:mvn/version "10.113"}
+        generateme/fastmath {:mvn/version "2.4.0"}
+        org.clojure/core.logic {:mvn/version "1.0.1"}}
+ :paths ["src"]}
