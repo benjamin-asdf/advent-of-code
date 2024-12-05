@@ -19,7 +19,7 @@
 
 (do
   (require-python '[numpy :as np])
-  (require-python '[torchj :as torchj])
+  (require-python '[torch :as torchj])
   (require-python '[torch.nn.functional :as F]))
 
 ;; Trying to cook a Cellular Automaton:
@@ -207,31 +207,34 @@
 ;; makes a board
 (defn MAS-mask
   [grid]
-  (torch/tensor (walk/postwalk
-                  (fn [x]
-                    (if (char? x) (get mas-map x 0) x))
-                  grid)
-                :dtype
-                torch/float))
+  (torch/tensor
+   (walk/postwalk
+    (fn [x]
+      (if (char? x) (get mas-map x 0) x))
+    grid)
+   :dtype
+   torch/float))
 
 (defn count-nonzero
   [t]
   (torch/numel (torch/nonzero (py.. t (view -1)))))
 
 (defn xmasses
-  [rule grid]
-  (torch/eq (play-ca (->weights rule) (MAS-mask grid))
-            xmas-target))
+  [rule board]
+  (torch/eq (play-ca (->weights rule) board) xmas-target))
 
 (defn part-2
   [input]
-  (count-nonzero
-    (let [grid (->grid input)]
-      (torch/sum (torch/stack
-                   (vec (map (fn [rule] (xmasses rule grid))
-                          MAS-rules)))
-                 :dim 0
-                 :keepdim true))))
+  (count-nonzero (let [grid (->grid input)
+                       ;; making this board is the bottleneck, it's ~7ms
+                       board (MAS-mask grid)]
+                   (torch/sum (torch/stack
+                                (vec (map (fn [rule]
+                                            (xmasses rule
+                                                     board))
+                                       MAS-rules)))
+                              :dim 0
+                              :keepdim true))))
 
 (part-2 ".M.S......\n..A..MSMS.\n.M.S.MAA..\n..A.ASMSM.\n.M.S.M....\n..........\nS.S.S.S.S.\n.A.A.A.A..\nM.M.M.M.M.\n..........\n")
 9
@@ -239,25 +242,44 @@
 ;; 🎉 🎉🎉🎉🎉
 ;;
 
-
 (comment
 
-
-  (time (part-2
-         (slurp "/home/benj/repos/advent-of-code/inputs/2024/4/input")))
+  (do (require-python '[torch.cuda :as torch.cuda])
+      (torch/set_default_device "cpu")
+      (time (part-2
+             (slurp "/home/benj/repos/advent-of-code/inputs/2024/4/input"))))
   ;; CPU:
-  ;; "Elapsed time: 31.604039 msecs"
+
+  ;; "Elapsed time: 10.92577 msecs"
+  ;; "Elapsed time: 10.382998 msecs"
+  ;; "Elapsed time: 8.90543 msecs"
+  ;; "Elapsed time: 8.838042 msecs"
+  ;; "Elapsed time: 8.922721 msecs"
+  ;; "Elapsed time: 10.300352 msecs"
+  ;; "Elapsed time: 8.98003 msecs"
+  ;; "Elapsed time: 9.087902 msecs"
 
 
-  (require-python '[torch.cuda :as torch.cuda])
-  (torch/set_default_device "cuda")
+  (do (require-python '[torch.cuda :as torch.cuda])
+      (torch/set_default_device "cuda")
 
-  ;; GPU:
-  (time (part-2
-         (slurp "/home/benj/repos/advent-of-code/inputs/2024/4/input")))
+      ;; GPU:
+      (time (part-2
+             (slurp "/home/benj/repos/advent-of-code/inputs/2024/4/input"))))
 
-  ;; "Elapsed time: 28.480514 msecs"
+  ;; "Elapsed time: 25.04139 msecs"
+  ;; "Elapsed time: 10.402461 msecs"
+  ;; "Elapsed time: 10.632494 msecs"
+  ;; "Elapsed time: 9.809857 msecs"
+  ;; "Elapsed time: 9.334082 msecs"
+  ;; "Elapsed time: 10.786924 msecs"
+  ;; "Elapsed time: 10.488293 msecs"
+  ;; "Elapsed time: 8.846165 msecs"
+  ;; "Elapsed time: 8.565997 msecs"
+  ;; "Elapsed time: 10.686495 msecs"
 
-  ;; is the same, bottleneck is something else.
-  ;; you also introduced device data transfers.
+  ;; probably dominated by data transfers
+  ;; and making the board is the bottleneck anyway
+
+
   )
