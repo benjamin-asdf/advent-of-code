@@ -207,12 +207,10 @@
 ;; makes a board
 (defn MAS-mask
   [grid]
-  (torch/tensor
-   (mapv
-    (partial mapv #(mas-map % 0))
-    grid)
-   :dtype
-   torch/float))
+  (let [data (mapv (partial mapv #(mas-map % 0)) grid)]
+    ;; building a tensor of this size takes some ms,
+    ;;
+    (torch/tensor data :dtype torch/float)))
 
 (defn count-nonzero
   [t]
