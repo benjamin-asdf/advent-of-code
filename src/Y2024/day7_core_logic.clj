@@ -33,11 +33,14 @@
   [target-v a inputs operators]
   (if-not (seq inputs)
     (== a target-v)
-    (or* (for [op operators]
-           (run-equation target-v
-                         (op a (first inputs))
-                         (rest inputs)
-                         operators)))))
+    (and*
+     ;; is an attempt at perf but doesn't make much difference
+     [(fd/<= a target-v)
+      (or* (for [op operators]
+             (run-equation target-v
+                           (op a (first inputs))
+                           (rest inputs)
+                           operators)))])))
 
 (defn runs?
   [operators [target-value a & inputs]]
@@ -53,22 +56,27 @@
                      [+ *
                       (fn concat-op [a b]
                         (parse-long (str a b)))])
-      (parse-input input))))
+            (parse-input input))))
+
+(part-1 example-input)
 
 (time
  (part-1
   (slurp
    "/home/benj/repos/advent-of-code/inputs/2024/7/input")))
 1298103531759
+
 ;; "Elapsed time: 119.655255 msecs"
 
 (time
  (part-2
   (slurp
    "/home/benj/repos/advent-of-code/inputs/2024/7/input")))
-;; "Elapsed time: 4632.616439 msecs"
-;; "Elapsed time: 5953.531977 msecs"
 140575048428831
+;; "Elapsed time: 4409.906271 msecs"
+;; "Elapsed time: 4555.854874 msecs"
+
+
 
 (comment
   (mapcat (partial runs? [+ *]) (parse-input example-input))
