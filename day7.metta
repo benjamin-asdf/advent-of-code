@@ -18,95 +18,60 @@
 
 ;; --------------------------------------------------------
 
+(= (run-equation
+    $outcome
+    $a
+    $inputs)
+   (if (== $inputs ())
+       (if (== $outcome $a)
+           $outcome
+           (empty))
+       (if (< $outcome $a)
+           (empty)
+           (run-equation
+            $outcome
+            ((operator-1)
+             $a
+             (car-atom $inputs))
+            (cdr-atom $inputs)))))
 
-
-;; (keep-working-equation 190 ($op 10 19))
-
-
-
-
-;; and because it is relational:
-
-;; !(let $op (operator)
-;;    (keep-working-equation 190 ($op 10 19)))
-
-;; [(outcome 190 operator *)]
-
-
-;; ----------------------------------------
-;; trying somehting:
-
-
-
-;; lets say we put into the knowledge base:
-
-;; (equation 190 (10 19))
-;; (equation 3267 (81 40 27))
-;; (equation 83 (17 5))
-
-;; (= (operator-part-1) +)
-;; (= (operator-part-1) *)
-
-;; this has  bug, doesn't make all possible operators: 
-;; (= (calc-equation $inputs)
-;;    (let* (($head (car-atom $inputs))
-;;           ($tail (cdr-atom $inputs)))
-;;      (if (== $tail ())
-;;          $head
-;;          ((operator-part-1)
-;;           (car-atom $inputs)
-;;           (calc-equation
-;;            (cdr-atom $inputs))))))
-
-;; !(calc-equation (1 2 3))
-
-;; [5, 6, 6, 7]
-
-;; !(* (* 1 2) 3)
-
-;; ah this one is missing,what
-;; !(* (+ 1 2) 3)
-
-
-;; !(match &self
-;;    (equation $res $inputs)
-;;    (if
-;;     (== $res (calc-equation $inputs))
-;;     $res
-;;     (empty)))
-
-
-;; this would work and do the optimization with the earlier out I think
-
-(=
- (run-equation $outcome $a $b)
- (if
-  (== $b ())
-  $a
-  (if
-   (< $outcome $a)
-   (empty)
+(= (part-1 $outcome $inputs)
    (run-equation
+         $outcome
+         (car-atom $inputs)
+         (cdr-atom $inputs)))
+
+
+;; --------------------------------
+;; part-2
+
+(= (run-equation-2
     $outcome
-    ((operator) $a (car-atom $b))
-    (cdr-atom $b)))))
+    $a
+    $inputs)
+   (if (== $inputs ())
+       (if (== $outcome $a)
+           $outcome
+           (empty))
+       (if (< $outcome $a)
+           (empty)
+           (run-equation-2
+            $outcome
+            ((operator)
+             $a
+             (car-atom $inputs))
+            (cdr-atom $inputs)))))
 
-(=
- (run-equation $outcome $inputs)
- (run-equation
-  $outcome
-  (car-atom $inputs)
-  (cdr-atom $inputs)))
-
-(= (keep-equation $outcome $inputs)
-   (if
-    (== (run-equation $outcome $inputs) $outcome)
-    $outcome
-    (empty)))
+(= (part-2 $outcome $inputs)
+   (run-equation-2
+         $outcome
+         (car-atom $inputs)
+         (cdr-atom $inputs)))
 
 
-;; !(run-equation 190 (19 10))
-;; !(run-equation 10 (19 10))
+
+
+
 
 
 

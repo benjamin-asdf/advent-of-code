@@ -1,17 +1,24 @@
 (ns Y2024.day7
-  (:require [clojure.string :as str]
-            [clojure.core.async :as a]
-            [clojure.core.logic.pldb :as pldb]
-            [clojure.core.logic.fd :as fd]
-            [clojure.core.logic :as logic]))
-
+  (:require [libpython-clj2.require :refer [require-python]]
+            [libpython-clj2.python :refer [py. py..] :as
+             py]))
 
 
 ;; now hyperon
-
 (require-python '[hyperon :as hyp :refer [E S V G]])
 
-(def metta (hyp/MeTTa))
+
+(do
+  (def metta (hyp/MeTTa))
+  (py.. metta
+    (register_atom "concat-op"
+                   (hyp/OperationAtom
+                    "concat-op"
+                    (fn [a b]
+                      (parse-long (str a b))))))
+  (metta-run!
+   (slurp "/home/benj/repos/advent-of-code/day7.metta")))
+
 
 (defn metta-run! [s] (py.. metta (run s)))
 
@@ -40,7 +47,6 @@
 21037: 9 7 18 13
 292: 11 6 16 20")
 
-
 (defn parse-input [s]
   (into
    [] (map
@@ -49,11 +55,6 @@
         (partial map parse-long)
         #(re-seq #"\d+" %1))
        (clojure.string/split-lines s))))
-
-(parse-input example-input)
-
-[190 10 19]
-;; a possible equation...
 
 ;; idea 1:
 ;; metta script should say
@@ -76,50 +77,16 @@
 
 ;; --------------------------
 
-;; either way, one thing that is already
-;; cool with metta would be the 'operator' like this:
-
-;; I write that in the metta script
-
-;; ok so this is my subsymbolic
-;; implementation of concat op
-
-
-(do
-
-  (py.. metta
-    (register_atom
-     "concat-op"
-     (hyp/OperationAtom
-      "concat-op"
-      (fn [a b]
-        (parse-long (str a b))))))
-
-  (metta-run! (slurp
-               "/home/benj/repos/advent-of-code/day7.metta"))
-
-  )
-
-
-
-
-;; ok let's be somewhat naive,
-;; go with something like idea 1
-(def equation [190 10 19])
-
-;; TODO:  I would need to call it 1 and 2 for part 1 and 2
-(def m-operator (metta-parse-single "(operator)"))
-
 (defn equation-possible-metta
   [equation m-operator]
   (let [[_ & inputs] equation]
     (reduce (fn [acc n]
               (E m-operator acc (hyp/ValueAtom n)))
-      (hyp/ValueAtom (first inputs))
-      (rest inputs))))
+            (hyp/ValueAtom (first inputs))
+            (rest inputs))))
 
-(defn part-1
-  [equations]
+(defn run
+  [equations m-operator]
   (let [keep-working-equation (metta-parse-single
                                 "keep-working-equation")]
     (apply +
@@ -131,27 +98,43 @@
                           (hyp/ValueAtom (first equation))
                           (equation-possible-metta
                             equation
-                            (metta-parse-single
-                              "(operator-1)")))))
-                equations))))))
+                            m-operator))))
+                   equations))))))
 
 
+(defn part-1
+  [equations]
+  (run equations (metta-parse-single "(operator-1)")))
 
-(time
- (part-1
-  (parse-input
-   (slurp
-    "/home/benj/repos/advent-of-code/inputs/2024/7/input"))))
+(defn part-2
+  [equations]
+  (run equations (metta-parse-single "(operator)")))
+
+;; correct, but not fast enough.
+;; So I got inspired by it and made day7_core_logic.clj
+
+(time (part-1 (parse-input example-input)))
+3749
+(time (part-2 (parse-input example-input)))
+11387
+
+(defn run-part
+  [part-op input]
+  (reduce +
+    (map metta-value-obj-value
+      (keep ffirst
+            (map metta-run!
+              (map (fn [[outcome & inputs]]
+                     (format "!(%s %s %s)"
+                             part-op
+                             outcome
+                             (reverse (into (list)
+                                            inputs))))
+                (parse-input example-input)))))))
 
 
-;; part 2
-
-(parse-input
- (slurp
-  "/home/benj/repos/advent-of-code/inputs/2024/7/input"))
-
-
-    ;; (def equation (first (parse-input example-input)))
-    ;;
-    ;; (run-equation 10 (19 10))
-    ;;
+(comment
+  (run-part "part-1" (parse-input example-input))
+  3749
+  (run-part "part-2" (parse-input example-input))
+  11387)

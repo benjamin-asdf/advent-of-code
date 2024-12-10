@@ -69,3 +69,7 @@
 ;; "Elapsed time: 4632.616439 msecs"
 ;; "Elapsed time: 5953.531977 msecs"
 140575048428831
+
+(comment
+  (mapcat (partial runs? [+ *]) (parse-input example-input))
+  (190 3267 292))
