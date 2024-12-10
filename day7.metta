@@ -1,3 +1,5 @@
+;; This is also on youtube, raw: https://youtu.be/ahJ5onoevdA?si=5yrbfyniC6OTbS25
+
 ;; part1
 (= (operator-1) +)
 (= (operator-1) *)
