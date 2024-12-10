@@ -14,6 +14,18 @@
        $input
        (empty)))
 
+;; --------------------------------
+;; the clojure code at
+;; src/Y2021/day7.clj
+;; does the equivalent of calling this:
+
+;; (keep-working-equation 190 (operator 10 19))
+;; where the second arg is just the tree of operators
+;; (as expression-atom)
+;; (operator a (operator b c)) ...
+
+
+
 
 
 ;; --------------------------------------------------------
