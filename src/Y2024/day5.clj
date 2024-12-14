@@ -11,6 +11,18 @@
 
 ;; ---------------------------------
 
+(defn parse-input
+  [s]
+  (let [[orderings updates] (str/split s #"\n\n")]
+    [(vec (map (fn [os]
+                 (vec (map parse-long
+                        (str/split os #"\|"))))
+            (str/split-lines orderings)))
+     (vec (map (comp vec
+                     #(map (partial parse-long) %)
+                     #(re-seq #"\d+" %))
+            (str/split-lines updates)))]))
+
 (defn middle-entry
   [coll]
   (nth coll (Math/floorDiv (long (count coll)) (long 2))))
@@ -93,7 +105,8 @@
                                  (fd/in lv
                                         (apply fd/domain
                                                page-update)))
-                               vars) (ordero vars)
+                               vars)
+                       (ordero vars)
                        (== q vars)])))))]
     (reduce +
             (map middle-entry (keep first updated-pages)))))
