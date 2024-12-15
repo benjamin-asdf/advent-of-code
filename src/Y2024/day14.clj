@@ -207,8 +207,6 @@
                           (map update-position)
                           (map #(update % 0 torus-grid)))})]
     (first (filter contigous-robots?
-             (iterate play-round {:n 0 :robots robots})))))
+                   (iterate play-round {:n 0 :robots robots})))))
 
-(prints-robots (play-rounds robots 7286))
-(play-rounds robots 7286)
 (def the-robots (part-2 robots))
